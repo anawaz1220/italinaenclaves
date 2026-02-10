@@ -1,0 +1,133 @@
+.map-search {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  z-index: 100;
+}
+
+.map-search-container {
+  display: flex;
+  align-items: center;
+  background: white;
+  border-radius: 4px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+  overflow: hidden;
+  transition: width 0.3s ease;
+}
+
+.map-search:not(.expanded) .map-search-container {
+  width: 40px;
+}
+
+.map-search.expanded .map-search-container {
+  width: 280px;
+}
+
+.map-search-icon-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  flex-shrink: 0;
+  color: #666;
+  transition: color 0.2s;
+}
+
+.map-search-icon-btn:hover {
+  color: #333;
+}
+
+.map-search-icon-btn svg {
+  width: 20px;
+  height: 20px;
+}
+
+.map-search-input {
+  flex: 1;
+  border: none;
+  padding: 10px 12px 10px 0;
+  font-size: 14px;
+  outline: none;
+  min-width: 0;
+}
+
+.map-search-input::placeholder {
+  color: #999;
+}
+
+.map-search-spinner {
+  width: 18px;
+  height: 18px;
+  border: 2px solid #ddd;
+  border-top-color: #008C45;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin-right: 10px;
+  flex-shrink: 0;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.map-search-dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  width: 280px;
+  background: white;
+  border-radius: 4px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.map-search-result {
+  padding: 12px 16px;
+  cursor: pointer;
+  border-bottom: 1px solid #eee;
+  transition: background-color 0.15s;
+}
+
+.map-search-result:last-child {
+  border-bottom: none;
+}
+
+.map-search-result:hover {
+  background-color: #f5f5f5;
+}
+
+.map-search-result-name {
+  font-weight: 500;
+  color: #1a1a1a;
+  margin-bottom: 2px;
+  font-size: 14px;
+}
+
+.map-search-result-location {
+  font-size: 12px;
+  color: #666;
+}
+
+@media (max-width: 480px) {
+  .map-search {
+    top: 10px;
+    right: 10px;
+  }
+
+  .map-search.expanded .map-search-container {
+    width: calc(100vw - 80px);
+    max-width: 280px;
+  }
+
+  .map-search-dropdown {
+    width: calc(100vw - 80px);
+    max-width: 280px;
+  }
+}

@@ -1,0 +1,96 @@
+.app {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+}
+
+.app-main {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+}
+
+.app-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  gap: 16px;
+  color: #666;
+}
+
+.app-loading .spinner {
+  width: 48px;
+  height: 48px;
+  border: 4px solid #eee;
+  border-top-color: #008C45;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.app-error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  gap: 16px;
+  padding: 20px;
+  text-align: center;
+}
+
+.app-error h2 {
+  color: #008C45;
+  margin: 0;
+}
+
+.app-error p {
+  color: #666;
+  margin: 0;
+}
+
+.app-error button {
+  padding: 12px 24px;
+  background: #008C45;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.app-error button:hover {
+  background: #007038;
+}
+
+.app-stats {
+  position: fixed;
+  bottom: 28px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(26, 26, 26, 0.5);
+  color: white;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 12px;
+  z-index: 50;
+  backdrop-filter: blur(4px);
+}
+
+@media (max-width: 768px) {
+  .app-stats {
+    font-size: 11px;
+    padding: 6px 12px;
+  }
+}

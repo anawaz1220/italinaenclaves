@@ -1,0 +1,78 @@
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 20px;
+  background: #008C45;
+  color: white;
+  gap: 16px;
+  z-index: 200;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.header-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.header-logo {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  object-fit: contain;
+}
+
+.header-title {
+  font-size: 21px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.header-admin-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 6px;
+  color: white;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.header-admin-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+.header-admin-btn svg {
+  width: 18px;
+  height: 18px;
+}
+
+.header-admin-text {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+@media (max-width: 768px) {
+  .header {
+    padding: 8px 16px;
+  }
+
+  .header-title {
+    font-size: 17px;
+  }
+
+  .header-admin-text {
+    display: none;
+  }
+
+  .header-admin-btn {
+    padding: 6px;
+    border-radius: 50%;
+  }
+}

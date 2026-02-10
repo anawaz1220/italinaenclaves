@@ -1,0 +1,25 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python:*)",
+      "Bash(psql:*)",
+      "Bash(set:*)",
+      "Bash(npx tsx:*)",
+      "Bash(node -e:*)",
+      "Bash(npm run db:migrate:*)",
+      "Bash(npm install)",
+      "Bash(npm create:*)",
+      "Bash(npm install:*)",
+      "Bash(copy \"D:\\\\Personel\\\\Freelance\\\\Fiverr\\\\Janello\\\\Italian Envl - Churches\\\\Data\\\\italianenclaves-logo.png\" \"d:\\\\Personel\\\\Freelance\\\\Fiverr\\\\Janello\\\\Italian Envl - Churches\\\\italianenclaves-app\\\\frontend\\\\public\\\\logo.png\")",
+      "Bash(curl:*)",
+      "Bash(npx tsc:*)",
+      "Bash(npm run dev:*)",
+      "Bash(timeout:*)",
+      "Bash(npm run query:*)",
+      "Bash(node query-stats.mjs:*)",
+      "Bash(pg_dump:*)",
+      "Bash(git init:*)",
+      "Bash(git remote add:*)"
+    ]
+  }
+}

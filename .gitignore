@@ -1,0 +1,47 @@
+# Dependencies
+node_modules/
+
+# Build outputs
+dist/
+build/
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Logs
+*.log
+npm-debug.log*
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Test coverage
+coverage/
+
+# Temporary files
+*.tmp
+*.temp
+
+# Data files (keep in Data folder, not in repo)
+*.xlsx
+*.csv
+failed_enrichments.json
+
+# Database backups (too large for git)
+data-backup/*.json
+data-backup/*.csv
+data-backup/*.dump
+data-backup/*.sql
+# Keep README
+!data-backup/README.md
+
+# Scripts temp files
+scripts/query-stats.mjs
+scripts/backup-db.mjs
