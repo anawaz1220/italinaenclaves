@@ -31,10 +31,7 @@ Interactive USA-wide map application for Italian Churches and Italian Enclave Ar
 - White: #FFFFFF
 - Dark/Black: #1A1A1A (for text, borders)
 
-## Google API Key
-```
-AIzaSyD1jTEVeWdnBr-uW_4aPYxDfpf8U8uuO4I
-```
+
 
 ## Data Files Location
 - Churches Order 1: `D:\Personel\Freelance\Fiverr\Janello\Italian Envl - Churches\Data\Italian Enclaves Database of Churches - Order1.xlsx`
