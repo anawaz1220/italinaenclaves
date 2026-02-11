@@ -45,3 +45,9 @@ data-backup/*.sql
 # Scripts temp files
 scripts/query-stats.mjs
 scripts/backup-db.mjs
+scripts/neon-export.sql
+scripts/*.cmd
+scripts/export-to-neon.mjs
+
+# Vercel
+.vercel

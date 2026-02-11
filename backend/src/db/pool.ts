@@ -3,11 +3,18 @@ import { config } from '../config.js';
 
 export const pool = new Pool({
   connectionString: config.databaseUrl,
+  ssl: config.nodeEnv === 'production' ? { rejectUnauthorized: false } : undefined,
+  max: 1, // Vercel serverless: minimize connections
+  idleTimeoutMillis: 30000,
+  connectionTimeoutMillis: 10000,
 });
 
 pool.on('error', (err) => {
   console.error('Unexpected error on idle client', err);
-  process.exit(-1);
+  // Don't exit process in serverless environment
+  if (config.nodeEnv !== 'production') {
+    process.exit(-1);
+  }
 });
 
 export async function query<T = any>(text: string, params?: any[]): Promise<T[]> {
