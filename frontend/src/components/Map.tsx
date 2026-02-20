@@ -5,11 +5,19 @@ import type { Church } from '../types';
 import { MapSearch } from './MapSearch';
 import './Map.css';
 
+// Import marker images
+import markerUnselected from '../assets/marker-unselected.png';
+import markerSelected from '../assets/marker-selected.png';
+
 const GOOGLE_MAPS_API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
 
 // USA center coordinates
 const DEFAULT_CENTER = { lat: 39.8283, lng: -98.5795 };
 const DEFAULT_ZOOM = 4;
+
+// Marker sizes
+const UNSELECTED_MARKER_SIZE = 28;
+const SELECTED_MARKER_SIZE = 36;
 
 // Light gray map style (similar to Red Sauce Map)
 const LIGHT_MAP_STYLE: google.maps.MapTypeStyle[] = [
@@ -96,17 +104,15 @@ function ChurchMarkers({ churches, selectedChurch, onSelectChurch }: MapProps) {
     // Create markers
     const markers = validChurches.map((church) => {
       const isSelected = selectedChurch?.id === church.id;
+      const size = isSelected ? SELECTED_MARKER_SIZE : UNSELECTED_MARKER_SIZE;
 
       const marker = new google.maps.Marker({
         position: { lat: church.latitude!, lng: church.longitude! },
         title: church.name,
         icon: {
-          path: google.maps.SymbolPath.CIRCLE,
-          scale: isSelected ? 12 : 8,
-          fillColor: isSelected ? '#CD212A' : '#008C45',
-          fillOpacity: 1,
-          strokeColor: '#fff',
-          strokeWeight: 2,
+          url: isSelected ? markerSelected : markerUnselected,
+          scaledSize: new google.maps.Size(size, size),
+          anchor: new google.maps.Point(size / 2, size / 2),
         },
         zIndex: isSelected ? 1000 : 1,
       });
@@ -122,26 +128,30 @@ function ChurchMarkers({ churches, selectedChurch, onSelectChurch }: MapProps) {
 
     // Initialize clusterer only if there are markers
     if (markers.length > 0) {
+      // Green color matching the unselected marker
+      const CLUSTER_GREEN = '#008c45';
+
       clustererRef.current = new MarkerClusterer({
         map,
         markers,
         renderer: {
           render: ({ count, position }) => {
+            // Fixed size cluster marker
+            const size = 40;
+            const clusterSvg = `
+              <svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 ${size} ${size}">
+                <circle cx="${size/2}" cy="${size/2}" r="${size/2 - 2}" fill="${CLUSTER_GREEN}" stroke="white" stroke-width="2"/>
+                <text x="${size/2}" y="${size/2 + 5}" text-anchor="middle" fill="white" font-size="13" font-weight="bold" font-family="Arial, sans-serif">${count}</text>
+              </svg>
+            `;
+            const clusterIcon = 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(clusterSvg);
+
             return new google.maps.Marker({
               position,
-              label: {
-                text: String(count),
-                color: '#fff',
-                fontWeight: 'bold',
-                fontSize: '12px',
-              },
               icon: {
-                path: google.maps.SymbolPath.CIRCLE,
-                scale: 20 + Math.min(count / 10, 10),
-                fillColor: '#008C45',
-                fillOpacity: 1,
-                strokeColor: '#fff',
-                strokeWeight: 3,
+                url: clusterIcon,
+                scaledSize: new google.maps.Size(size, size),
+                anchor: new google.maps.Point(size / 2, size / 2),
               },
               zIndex: 500,
             });

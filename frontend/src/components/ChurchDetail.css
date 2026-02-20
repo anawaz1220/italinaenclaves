@@ -186,10 +186,6 @@
   color: #1a1a1a;
 }
 
-.rating-star {
-  color: #f5a623;
-}
-
 .church-notes {
   background: #f8f8f8;
   border-radius: 8px;
@@ -216,10 +212,10 @@
   align-items: center;
   gap: 10px;
   padding: 12px 16px;
-  border: 1px solid #ddd;
+  border: 1px solid #1a1a1a;
   border-radius: 8px;
   background: white;
-  color: #333;
+  color: #1a1a1a;
   font-size: 14px;
   font-weight: 500;
   text-decoration: none;
@@ -228,24 +224,13 @@
 
 .action-button:hover {
   background: #f5f5f5;
-  border-color: #ccc;
+  border-color: #1a1a1a;
 }
 
 .action-button svg {
   width: 18px;
   height: 18px;
   flex-shrink: 0;
-}
-
-.action-button-primary {
-  background: #008C45;
-  border-color: #008C45;
-  color: white;
-}
-
-.action-button-primary:hover {
-  background: #007038;
-  border-color: #007038;
 }
 
 @media (max-width: 768px) {

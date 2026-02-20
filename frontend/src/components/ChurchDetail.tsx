@@ -87,14 +87,6 @@ export function ChurchDetail({ church, loading, onClose }: ChurchDetailProps) {
                 </div>
               )}
 
-              {church.google_rating && (
-                <div className="church-meta-item">
-                  <span className="meta-label">Rating</span>
-                  <span className="meta-value">
-                    <span className="rating-star">★</span> {church.google_rating}
-                  </span>
-                </div>
-              )}
             </div>
 
             {church.notes && (
@@ -109,7 +101,7 @@ export function ChurchDetail({ church, loading, onClose }: ChurchDetailProps) {
                   href={church.google_url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="action-button action-button-primary"
+                  className="action-button"
                 >
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                     <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
