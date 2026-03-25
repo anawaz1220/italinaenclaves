@@ -141,7 +141,7 @@ router.get('/:id/photo/:photoRef', async (req: Request, res: Response) => {
     // Step 2: Fetch photo media using the full resource name
     const photoName = photos[0].name; // e.g. "places/ChIJ.../photos/AcJnMu..."
     const mediaResponse = await fetch(
-      `https://places.googleapis.com/v1/${photoName}/media?key=${config.googleApiKey}&maxWidthPx=${maxWidth}&skipHttpRedirect=true`
+      `https://places.googleapis.com/v1/${photoName}/media?key=${config.googleApiKey}&maxWidthPx=${maxWidth}`
     );
 
     if (!mediaResponse.ok) {
