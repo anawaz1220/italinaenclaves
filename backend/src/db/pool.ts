@@ -4,7 +4,7 @@ import { config } from '../config.js';
 export const pool = new Pool({
   connectionString: config.databaseUrl,
   ssl: config.nodeEnv === 'production' ? { rejectUnauthorized: false } : undefined,
-  max: 1, // Vercel serverless: minimize connections
+  max: 10,
   idleTimeoutMillis: 30000,
   connectionTimeoutMillis: 10000,
 });

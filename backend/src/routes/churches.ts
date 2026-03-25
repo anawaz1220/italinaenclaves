@@ -1,5 +1,6 @@
 import { Router, Request, Response } from 'express';
 import * as churchService from '../services/churchService.js';
+import { query } from '../db/pool.js';
 import { config } from '../config.js';
 
 const router = Router();
@@ -101,14 +102,29 @@ router.get('/:id', async (req: Request, res: Response) => {
 // GET /api/churches/:id/photo/:photoRef - Proxy Google Photos
 router.get('/:id/photo/:photoRef', async (req: Request, res: Response) => {
   try {
+    const id = parseInt(req.params.id, 10);
     const { photoRef } = req.params;
-    const maxWidth = req.query.maxwidth || '400';
+    const maxWidth = req.query.maxwidth || '600';
 
-    const photoUrl = `https://maps.googleapis.com/maps/api/place/photo?maxwidth=${maxWidth}&photo_reference=${photoRef}&key=${config.googleApiKey}`;
+    // Use New Places API format with place_id
+    const rows = await query<{ google_place_id: string }>(
+      'SELECT google_place_id FROM churches WHERE id = $1',
+      [id]
+    );
+    const placeId = rows[0]?.google_place_id;
 
-    // Fetch and pipe the image bytes (redirect causes ERR_BLOCKED_BY_ORB)
+    let photoUrl: string;
+    if (placeId) {
+      // New Places API: places/{place_id}/photos/{photo_ref}/media
+      photoUrl = `https://places.googleapis.com/v1/places/${placeId}/photos/${photoRef}/media?key=${config.googleApiKey}&maxWidthPx=${maxWidth}`;
+    } else {
+      // Fallback to old Places API
+      photoUrl = `https://maps.googleapis.com/maps/api/place/photo?maxwidth=${maxWidth}&photo_reference=${photoRef}&key=${config.googleApiKey}`;
+    }
+
     const response = await fetch(photoUrl);
     if (!response.ok) {
+      console.error(`Photo fetch failed: ${response.status} for placeId=${placeId}, photoRef=${photoRef.substring(0, 20)}...`);
       return res.status(response.status).json({ error: 'Failed to fetch photo' });
     }
 
