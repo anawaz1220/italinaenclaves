@@ -103,36 +103,57 @@ router.get('/:id', async (req: Request, res: Response) => {
 router.get('/:id/photo/:photoRef', async (req: Request, res: Response) => {
   try {
     const id = parseInt(req.params.id, 10);
-    const { photoRef } = req.params;
     const maxWidth = req.query.maxwidth || '600';
 
-    // Use New Places API format with place_id
+    // Get church's google_place_id
     const rows = await query<{ google_place_id: string }>(
       'SELECT google_place_id FROM churches WHERE id = $1',
       [id]
     );
     const placeId = rows[0]?.google_place_id;
-
-    let photoUrl: string;
-    if (placeId) {
-      // New Places API: places/{place_id}/photos/{photo_ref}/media
-      photoUrl = `https://places.googleapis.com/v1/places/${placeId}/photos/${photoRef}/media?key=${config.googleApiKey}&maxWidthPx=${maxWidth}`;
-    } else {
-      // Fallback to old Places API
-      photoUrl = `https://maps.googleapis.com/maps/api/place/photo?maxwidth=${maxWidth}&photo_reference=${photoRef}&key=${config.googleApiKey}`;
+    if (!placeId) {
+      return res.status(404).json({ error: 'No place ID for this church' });
     }
 
-    const response = await fetch(photoUrl);
-    if (!response.ok) {
-      console.error(`Photo fetch failed: ${response.status} for placeId=${placeId}, photoRef=${photoRef.substring(0, 20)}...`);
-      return res.status(response.status).json({ error: 'Failed to fetch photo' });
+    // Step 1: Fetch fresh photo names from Places API (New)
+    // Stored photo_reference values are old-API format and cannot be used directly
+    const placeResponse = await fetch(
+      `https://places.googleapis.com/v1/places/${placeId}`,
+      {
+        headers: {
+          'X-Goog-Api-Key': config.googleApiKey,
+          'X-Goog-FieldMask': 'photos',
+        },
+      }
+    );
+
+    if (!placeResponse.ok) {
+      console.error(`Place fetch failed: ${placeResponse.status} for placeId=${placeId}`);
+      return res.status(placeResponse.status).json({ error: 'Failed to get place photos' });
     }
 
-    const contentType = response.headers.get('content-type') || 'image/jpeg';
+    const placeData = await placeResponse.json();
+    const photos = placeData.photos;
+    if (!photos || photos.length === 0) {
+      return res.status(404).json({ error: 'No photos available' });
+    }
+
+    // Step 2: Fetch photo media using the full resource name
+    const photoName = photos[0].name; // e.g. "places/ChIJ.../photos/AcJnMu..."
+    const mediaResponse = await fetch(
+      `https://places.googleapis.com/v1/${photoName}/media?key=${config.googleApiKey}&maxWidthPx=${maxWidth}&skipHttpRedirect=true`
+    );
+
+    if (!mediaResponse.ok) {
+      console.error(`Photo media fetch failed: ${mediaResponse.status} for ${photoName}`);
+      return res.status(mediaResponse.status).json({ error: 'Failed to fetch photo' });
+    }
+
+    const contentType = mediaResponse.headers.get('content-type') || 'image/jpeg';
     res.setHeader('Content-Type', contentType);
     res.setHeader('Cache-Control', 'public, max-age=86400');
 
-    const buffer = await response.arrayBuffer();
+    const buffer = await mediaResponse.arrayBuffer();
     res.send(Buffer.from(buffer));
   } catch (error) {
     console.error('Error fetching photo:', error);
