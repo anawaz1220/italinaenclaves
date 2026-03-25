@@ -132,7 +132,7 @@ router.get('/:id/photo/:photoRef', async (req: Request, res: Response) => {
       return res.status(placeResponse.status).json({ error: 'Failed to get place photos' });
     }
 
-    const placeData = await placeResponse.json();
+    const placeData = await placeResponse.json() as { photos?: Array<{ name: string }> };
     const photos = placeData.photos;
     if (!photos || photos.length === 0) {
       return res.status(404).json({ error: 'No photos available' });
