@@ -106,8 +106,18 @@ router.get('/:id/photo/:photoRef', async (req: Request, res: Response) => {
 
     const photoUrl = `https://maps.googleapis.com/maps/api/place/photo?maxwidth=${maxWidth}&photo_reference=${photoRef}&key=${config.googleApiKey}`;
 
-    // Redirect to the Google photo URL (or proxy it)
-    res.redirect(photoUrl);
+    // Fetch and pipe the image bytes (redirect causes ERR_BLOCKED_BY_ORB)
+    const response = await fetch(photoUrl);
+    if (!response.ok) {
+      return res.status(response.status).json({ error: 'Failed to fetch photo' });
+    }
+
+    const contentType = response.headers.get('content-type') || 'image/jpeg';
+    res.setHeader('Content-Type', contentType);
+    res.setHeader('Cache-Control', 'public, max-age=86400');
+
+    const buffer = await response.arrayBuffer();
+    res.send(Buffer.from(buffer));
   } catch (error) {
     console.error('Error fetching photo:', error);
     res.status(500).json({ error: 'Failed to fetch photo' });
