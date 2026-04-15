@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import type { Church } from '../types';
+import type { Church, SearchResult } from '../types';
 import { useSearch } from '../hooks/useChurches';
 import './SearchBar.css';
 
@@ -42,8 +42,8 @@ export function SearchBar({ onSelectChurch }: SearchBarProps) {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  const handleSelect = (church: Church) => {
-    onSelectChurch(church);
+  const handleSelect = (church: SearchResult) => {
+    onSelectChurch(church as unknown as Church);
     setQuery('');
     clearResults();
     setIsOpen(false);
@@ -70,15 +70,15 @@ export function SearchBar({ onSelectChurch }: SearchBarProps) {
 
       {isOpen && results.length > 0 && (
         <div ref={dropdownRef} className="search-dropdown">
-          {results.map((church) => (
+          {results.map((result) => (
             <div
-              key={church.id}
+              key={result.id}
               className="search-result"
-              onClick={() => handleSelect(church)}
+              onClick={() => handleSelect(result)}
             >
-              <div className="search-result-name">{church.name}</div>
+              <div className="search-result-name">{result.name}</div>
               <div className="search-result-location">
-                {[church.city, church.state].filter(Boolean).join(', ')}
+                {[result.city, result.state].filter(Boolean).join(', ')}
               </div>
             </div>
           ))}
