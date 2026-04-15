@@ -2,32 +2,47 @@ import { useState, useCallback } from 'react';
 import { Header } from './components/Header';
 import { MapContainer } from './components/Map';
 import { ChurchDetail } from './components/ChurchDetail';
-import { useChurches, useChurchDetail } from './hooks/useChurches';
-import type { Church } from './types';
+import { EnclaveDetail } from './components/EnclaveDetail';
+import { useChurches, useEnclaves, useChurchDetail, useEnclaveDetail } from './hooks/useChurches';
+import type { Church, Enclave } from './types';
 import './App.css';
 
-function App() {
-  const { churches, loading, error } = useChurches();
-  const [selectedChurchId, setSelectedChurchId] = useState<number | null>(null);
-  const [selectedChurch, setSelectedChurch] = useState<Church | null>(null);
+type SelectedItem =
+  | { type: 'church'; item: Church }
+  | { type: 'enclave'; item: Enclave }
+  | null;
 
-  const { church: churchDetail, loading: detailLoading } = useChurchDetail(selectedChurchId);
+function App() {
+  const { churches, loading: churchesLoading, error: churchesError } = useChurches();
+  const { enclaves, loading: enclavesLoading } = useEnclaves();
+
+  const [selected, setSelected] = useState<SelectedItem>(null);
+
+  const selectedChurchId = selected?.type === 'church' ? selected.item.id : null;
+  const selectedEnclaveId = selected?.type === 'enclave' ? selected.item.id : null;
+
+  const { church: churchDetail, loading: churchDetailLoading } = useChurchDetail(selectedChurchId);
+  const { enclave: enclaveDetail, loading: enclaveDetailLoading } = useEnclaveDetail(selectedEnclaveId);
 
   const handleSelectChurch = useCallback((church: Church) => {
-    setSelectedChurch(church);
-    setSelectedChurchId(church.id);
+    setSelected({ type: 'church', item: church });
+  }, []);
+
+  const handleSelectEnclave = useCallback((enclave: Enclave) => {
+    setSelected({ type: 'enclave', item: enclave });
   }, []);
 
   const handleCloseDetail = useCallback(() => {
-    setSelectedChurchId(null);
-    setSelectedChurch(null);
+    setSelected(null);
   }, []);
 
-  if (error) {
+  const loading = churchesLoading || enclavesLoading;
+
+  if (churchesError) {
     return (
       <div className="app-error">
-        <h2>Unable to load churches</h2>
-        <p>{error}</p>
+        <h2>Unable to load map data</h2>
+        <p>{churchesError}</p>
         <button onClick={() => window.location.reload()}>Try Again</button>
       </div>
     );
@@ -41,19 +56,28 @@ function App() {
         {loading ? (
           <div className="app-loading">
             <div className="spinner" />
-            <p>Loading churches...</p>
+            <p>Loading map...</p>
           </div>
         ) : (
           <MapContainer
             churches={churches}
-            selectedChurch={selectedChurch}
+            enclaves={enclaves}
+            selectedChurch={selected?.type === 'church' ? selected.item : null}
+            selectedEnclave={selected?.type === 'enclave' ? selected.item : null}
             onSelectChurch={handleSelectChurch}
+            onSelectEnclave={handleSelectEnclave}
           />
         )}
 
         <ChurchDetail
           church={churchDetail}
-          loading={detailLoading}
+          loading={churchDetailLoading}
+          onClose={handleCloseDetail}
+        />
+
+        <EnclaveDetail
+          enclave={enclaveDetail}
+          loading={enclaveDetailLoading}
           onClose={handleCloseDetail}
         />
       </main>

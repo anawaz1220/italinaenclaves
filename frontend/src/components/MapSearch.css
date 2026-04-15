@@ -103,16 +103,94 @@
   background-color: #f5f5f5;
 }
 
+.map-search-result-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 2px;
+}
+
 .map-search-result-name {
   font-weight: 500;
   color: #1a1a1a;
-  margin-bottom: 2px;
   font-size: 14px;
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.search-result-badge {
+  font-size: 10px;
+  font-weight: 600;
+  padding: 2px 7px;
+  border-radius: 10px;
+  flex-shrink: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.search-result-badge--church {
+  background: #e8f5ee;
+  color: #008c45;
+}
+
+.search-result-badge--enclave {
+  background: #fde8e9;
+  color: #cd212a;
 }
 
 .map-search-result-location {
   font-size: 12px;
   color: #666;
+}
+
+/* Search type filter tabs */
+.map-search-filters {
+  display: flex;
+  background: white;
+  border-radius: 0 0 4px 4px;
+  border-top: 1px solid #eee;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.search-filter-btn {
+  flex: 1;
+  padding: 6px 8px;
+  font-size: 12px;
+  font-weight: 500;
+  color: #666;
+  background: none;
+  border: none;
+  border-right: 1px solid #eee;
+  cursor: pointer;
+  transition: background-color 0.15s, color 0.15s;
+}
+
+.search-filter-btn:last-child {
+  border-right: none;
+}
+
+.search-filter-btn:hover {
+  background-color: #f5f5f5;
+}
+
+.search-filter-btn.active {
+  color: #1a1a1a;
+  background-color: #f0f0f0;
+  font-weight: 600;
+}
+
+.search-filter-church.active {
+  color: #008c45;
+  background-color: #f0f8f4;
+}
+
+.search-filter-enclave.active {
+  color: #cd212a;
+  background-color: #fdf0f1;
 }
 
 @media (max-width: 480px) {

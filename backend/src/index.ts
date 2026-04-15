@@ -2,6 +2,8 @@ import express from 'express';
 import cors from 'cors';
 import { config } from './config.js';
 import churchesRouter from './routes/churches.js';
+import enclavesRouter from './routes/enclaves.js';
+import adminRouter from './routes/admin.js';
 
 const app = express();
 
@@ -16,6 +18,8 @@ app.get('/api/health', (_req, res) => {
 
 // Routes
 app.use('/api/churches', churchesRouter);
+app.use('/api/enclaves', enclavesRouter);
+app.use('/api/admin', adminRouter);
 
 // Error handler
 app.use((err: Error, _req: express.Request, res: express.Response, _next: express.NextFunction) => {
