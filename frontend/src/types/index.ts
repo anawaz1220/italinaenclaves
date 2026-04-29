@@ -24,6 +24,7 @@ export interface ChurchDetail {
   google_rating: number | null;
   google_url: string | null;
   website: string | null;
+  church_page_url: string | null;
   phone: string | null;
 }
 
@@ -53,6 +54,7 @@ export interface EnclaveDetail {
   google_rating: number | null;
   google_url: string | null;
   website: string | null;
+  enclave_page_url: string | null;
 }
 
 export interface GooglePhoto {

@@ -115,9 +115,9 @@ export function ChurchDetail({ church, loading, onClose }: ChurchDetailProps) {
                 </a>
               )}
 
-              {church.website && (
+              {church.church_page_url && (
                 <a
-                  href={church.website}
+                  href={church.church_page_url}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="action-button"
@@ -127,7 +127,7 @@ export function ChurchDetail({ church, loading, onClose }: ChurchDetailProps) {
                     <line x1="2" y1="12" x2="22" y2="12" />
                     <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
                   </svg>
-                  Website
+                  Visit Page
                 </a>
               )}
 

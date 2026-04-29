@@ -21,6 +21,7 @@ export interface Enclave extends EnclaveListItem {
   google_rating: number | null;
   google_url: string | null;
   website: string | null;
+  enclave_page_url: string | null;
   phone: string | null;
   enrichment_status: 'pending' | 'enriched' | 'failed';
   enrichment_error: string | null;

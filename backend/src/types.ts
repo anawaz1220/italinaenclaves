@@ -14,6 +14,7 @@ export interface Church {
   google_rating: number | null;
   google_url: string | null;
   website: string | null;
+  church_page_url: string | null;
   phone: string | null;
   enrichment_status: 'pending' | 'enriched' | 'failed';
   enrichment_error: string | null;
